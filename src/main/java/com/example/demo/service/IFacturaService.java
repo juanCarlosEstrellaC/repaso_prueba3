@@ -8,6 +8,6 @@ import com.example.demo.modelo.dto.ProductoDTO;
 public interface IFacturaService {
 
 	public void realizarFactura(Factura factura);
-	public void realizarFacturaLista(List<ProductoDTO> listaDto, String cedula, String numeroVenta);
+	public Factura realizarFacturaLista(List<ProductoDTO> listaDto, String cedula, String numeroVenta);
 	
 }

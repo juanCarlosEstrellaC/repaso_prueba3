@@ -31,7 +31,7 @@
 						<th>tipo</th>
 						<th>stock</th>
 						<th>precio</th>
-						<th>preVenta</th>
+						<th>Añadir a la venta</th>
 					</tr>
 				</thead>
 
@@ -42,15 +42,12 @@
 						<td th:text="${producto.tipo}"></td>
 						<td th:text="${producto.stock}"></td>
 						<td th:text="${producto.precio}"></td>
-
 						<td>
-							<form th:action="@{/facturas/preVenta/{id}(id=${producto.codigo})}"
+							<form th:action="@{/facturas/añadirProducto/{codigo}(codigo=${producto.codigo})}"
 								th:object="${producto}" th:method="GET">
-								<input type="submit" value="preVenta">
+								<input type="submit" value="Añadir">
 							</form>
 						</td>
-						
-						
 					</tr>
 				</tbody>
 			</table>

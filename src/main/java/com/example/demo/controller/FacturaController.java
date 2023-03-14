@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,29 +28,33 @@ public class FacturaController {
 	@Autowired
 	private IProductoService iProductoService;
 
-	Factura fac = null;
-	List<Detalle> det = null;
-	List<ProductoDTO> listadto = new ArrayList<>();
+	private String cod = null;
+	private List<Detalle> listaDet = null;
+	private List<ProductoDTO> listadto = new ArrayList<>();
 
-	@GetMapping("/visualizarProductos") // URL: http://localhost:8085/facturas/visualizarProductos
+	@GetMapping("/visualizarProductos") 	// URL: http://localhost:8085/facturas/visualizarProductos
 	public String visualizarProductos(Model model, Factura factura) {
+//	    cod = null;
+//		listaDet = new ArrayList<>();
+//		listadto = new ArrayList<>();
+		
 		List<Producto> listaProductos = this.iProductoService.buscarTodos();
 		model.addAttribute("factura", factura);
 		model.addAttribute("listaProductos", listaProductos);
-		return "vistaVisualizarProductos";
+		return "vistaFacturaVisualizarProductos";
 	}
 
-	String cod = null;
 
-	@GetMapping("/preVenta/{id}")
-	public String preVenta(@PathVariable("id") String codigo, Model model, ProductoDTO dto) {
+	@GetMapping("/añadirProducto/{codigo}")
+	public String añadirProducto(@PathVariable("codigo") String codigo, Model model, ProductoDTO dto) {
 		cod = codigo;
 		dto.setCodigo(codigo);
 		model.addAttribute("dto", dto);
-		return "vistaPreVenta";
+		return "vistaFacturaAñadirProducto";
 	}
 
-	@PostMapping("/guardarElemento")
+	// NO SERÁ SOLO GET?
+	@GetMapping("/guardarCantidadProducto")
 	public String guardarElemento(Model model, ProductoDTO dto) {
 		dto.setCodigo(cod);
 		listadto.add(dto);
@@ -60,20 +63,12 @@ public class FacturaController {
 
 	@PostMapping("/guardarFactura")
 	public String guardarElemento(Model model, Factura factura) {
-		this.iFacturaService.realizarFacturaLista(listadto, factura.getCedula(), "A102");
-		model.addAttribute("factura", factura);
+		Factura facturaTotal = this.iFacturaService.realizarFacturaLista(listadto, factura.getCedula(), "A102");
+		listaDet = facturaTotal.getMiListaDetalleFact();
+		model.addAttribute("listaDet", listaDet);
 
 		return "vistaDetalle";
 	}
 
-//	@GetMapping("/preVenta/{codigo}")
-//	public String preVenta(@PathVariable("codigo") String codigo, Model model, Detalle detalle) {		
-//		Producto pro = this.iProductoService.buscarPorCodigo(codigo);
-//		detalle.setMiProducto(pro);
-//		detalle.setPrecioUnitario(pro.getPrecio());
-//		model.addAttribute("detalle", detalle);
-//
-//		return "vistaPreVenta";
-//	}
 
 }

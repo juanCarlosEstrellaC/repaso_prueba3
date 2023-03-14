@@ -29,7 +29,7 @@ public class FacturaServiceImpl implements IFacturaService {
 	}
 
 	@Override
-	public void realizarFacturaLista(List<ProductoDTO> listaDto, String cedula, String numeroVenta) {
+	public Factura realizarFacturaLista(List<ProductoDTO> listaDto, String cedula, String numeroVenta) {
 
 		Producto pro = null;
 		Factura fac = new Factura();
@@ -74,6 +74,7 @@ public class FacturaServiceImpl implements IFacturaService {
 		fac.setTotal(total);
 		
 		this.iFacturaRepository.realizarFactura(fac);
+		return fac;
 		
 	}
 

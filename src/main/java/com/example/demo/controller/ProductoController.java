@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,13 +22,16 @@ public class ProductoController {
 	@GetMapping("/ingresarProducto") // URL:   http://localhost:8085/productos/ingresarProducto
 	public String ingresarProducto(Model model, Producto producto) {
 		model.addAttribute("producto", producto);
-		return "vistaIngresoProducto";
+		return "vistaProductoIngreso";
 	}
 	
 	@PostMapping("/guardarProducto")
 	public String guardarProducto(Model model, Producto producto) {
 		this.iProductoService.ingresar(producto);
-		return "redirect:/productos/ingresarProducto";
+		
+		List<Producto> listaProductos = this.iProductoService.buscarTodos();
+		model.addAttribute("listaProductos", listaProductos);
+		return "vistaProductosVerTodos";
 	}
-	
+
 }
